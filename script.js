@@ -1,7 +1,4 @@
-// Word Search Game
-
 // Game configuration
-// Let's update the game configuration to improve UX
 const config = {
     gridSize: 10,
     wordCount: 8,  // Increased from 6 to 8 for more challenge
