@@ -6,12 +6,12 @@
 }
 
 body {
-    background-color: #f0f2f5;
+    background-color: #f0f7ff;
     padding: 20px;
     min-height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 }
 
 .container {
@@ -19,7 +19,7 @@ body {
     width: 95%;
     margin: 0 auto;
     background-color: white;
-    border-radius: 15px;
+    border-radius: 16px;
     padding: 25px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
@@ -27,7 +27,7 @@ body {
 h1 {
     text-align: center;
     margin-bottom: 25px;
-    color: #333;
+    color: #2c3e50;
     font-size: 2.2rem;
     font-weight: 700;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
@@ -38,6 +38,7 @@ h1 {
     justify-content: space-between;
     margin-bottom: 25px;
     flex-wrap: wrap;
+    gap: 15px;
 }
 
 .word-list {
@@ -51,7 +52,7 @@ h1 {
     background-color: #f0f0f0;
     padding: 8px 15px;
     border-radius: 20px;
-    font-size: 14px;
+    font-size: 15px;
     transition: all 0.3s;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     border: 1px solid #e0e0e0;
@@ -61,40 +62,41 @@ h1 {
     background-color: #4CAF50;
     color: white;
     text-decoration: line-through;
-    border-color: #3d8b40;
+    transform: scale(0.95);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-color: #3d9140;
 }
 
 .score-container {
     text-align: right;
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    background-color: #2c3e50;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .score-container p {
     margin: 5px 0;
+    font-size: 1.1rem;
     font-weight: 600;
 }
 
 .score-container span {
+    font-size: 1.2rem;
     font-weight: 700;
-    color: #4CAF50;
-    font-size: 1.2em;
+    color: #ffeb3b;
 }
 
 .grid-container {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
-    gap: 5px;
+    gap: 4px;
     margin-bottom: 25px;
     padding: 15px;
     background-color: #f8f9fa;
-    border-radius: 10px;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+    border-radius: 12px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
 }
 
 .grid-cell {
@@ -105,28 +107,87 @@ h1 {
     background-color: white;
     border-radius: 8px;
     font-weight: bold;
+    font-size: 1.1rem;
     cursor: pointer;
     user-select: none;
     transition: all 0.2s;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    font-size: 1.2em;
+    border: 1px solid #e0e0e0;
 }
 
 .grid-cell:hover {
-    transform: scale(1.05);
+    background-color: #f5f5f5;
+    transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .grid-cell.selected {
     background-color: #ffeb3b;
+    color: #333;
     transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 1;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    border-color: #e6d335;
 }
 
 .grid-cell.correct {
     background-color: #4CAF50;
     color: white;
-    transform: scale(1.05);
+    transform: scale(1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-color: #3d9140;
+}
+
+/* Estilo para palavras não encontradas */
+.word-missed {
+    background-color: #e74c3c;
+    color: white;
+    text-decoration: none;
+    transform: scale(0.95);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-color: #c0392b;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.95); }
+    50% { transform: scale(1); }
+    100% { transform: scale(0.95); }
+}
+
+/* Estilos para o seletor de dificuldade */
+.difficulty-selector {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.difficulty-btn {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 2px solid #ddd;
+    padding: 15px 25px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    font-size: 18px;
+    min-width: 120px;
+}
+
+.difficulty-btn:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.difficulty-btn.active {
+    background-color: #3498db;
+    color: white;
+    border-color: #2980b9;
 }
 
 .controls {
@@ -135,87 +196,113 @@ h1 {
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #3498db;
     color: white;
     border: none;
-    padding: 12px 25px;
+    padding: 12px 30px;
     border-radius: 30px;
     cursor: pointer;
     font-size: 16px;
     font-weight: 600;
     transition: all 0.3s;
-    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+    letter-spacing: 0.5px;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #2980b9;
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(76, 175, 80, 0.4);
+    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
 }
 
 button:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(52, 152, 219, 0.4);
 }
 
 @media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+    
     .game-info {
         flex-direction: column;
-        gap: 15px;
     }
     
     .word-list {
         max-width: 100%;
+        margin-bottom: 15px;
     }
     
     .score-container {
         width: 100%;
-        flex-direction: row;
-        justify-content: space-around;
+        text-align: center;
     }
     
     .grid-container {
-        grid-template-columns: repeat(10, 1fr);
         gap: 3px;
         padding: 10px;
     }
     
     .grid-cell {
-        font-size: 14px;
+        font-size: 16px;
+    }
+    
+    .difficulty-selector {
+        flex-wrap: wrap;
     }
 }
 
-/* Animation for found words */
-@keyframes celebrate {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
+@media (max-width: 480px) {
+    .container {
+        padding: 12px;
+        width: 98%;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    .word-item {
+        padding: 8px 14px;
+        font-size: 15px;
+    }
+    
+    .grid-cell {
+        font-size: 18px;
+        font-weight: 700;
+    }
+    
+    .grid-container {
+        gap: 4px;
+    }
+    
+    button {
+        padding: 12px 25px;
+        font-size: 16px;
+    }
+    
+    .difficulty-btn {
+        padding: 10px 15px;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
 }
 
-.celebrate {
-    animation: celebrate 0.5s ease-in-out;
+/* Estilos para diferentes tamanhos de grade baseados na dificuldade */
+.grid-easy {
+    grid-template-columns: repeat(8, 1fr);
 }
 
-/* Progress bar for timer */
-.timer-bar {
-    height: 6px;
-    background-color: #e0e0e0;
-    border-radius: 3px;
-    margin-top: 5px;
-    overflow: hidden;
+.grid-medium {
+    grid-template-columns: repeat(10, 1fr);
 }
 
-.timer-progress {
-    height: 100%;
-    background-color: #4CAF50;
-    transition: width 1s linear;
-}
-
-/* Game status message */
-.game-status {
-    text-align: center;
-    margin: 15px 0;
-    font-weight: 600;
-    color: #555;
-    min-height: 24px;
+.grid-hard {
+    grid-template-columns: repeat(12, 1fr);
 }
