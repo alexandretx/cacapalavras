@@ -1,8 +1,10 @@
+// Word Search Game
+
 // Game configuration
 const config = {
     gridSize: 10,
-    wordCount: 8,  // Increased from 6 to 8 for more challenge
-    timeLimit: 120,  // Increased from 60 to 120 seconds for better gameplay
+    wordCount: 6,
+    timeLimit: 160,
     directions: [
         [0, 1],   // right
         [1, 0],   // down
@@ -12,7 +14,25 @@ const config = {
         [-1, 0],  // up
         [-1, 1],  // diagonal up-right
         [-1, -1]  // diagonal up-left
-    ]
+    ],
+    difficulty: 'medium', // default difficulty
+    difficulties: {
+        easy: {
+            gridSize: 8,
+            wordCount: 5,
+            timeLimit: 160 
+        },
+        medium: {
+            gridSize: 10,
+            wordCount: 6,
+            timeLimit: 160 
+        },
+        hard: {
+            gridSize: 12,
+            wordCount: 8,
+            timeLimit: 160 
+        }
+    }
 };
 
 // Word list to choose from
@@ -38,21 +58,22 @@ let gameState = {
     timeRemaining: config.timeLimit,
     timerInterval: null,
     selectedCells: [],
-    isSelecting: false,
-    gameStatus: 'ready'  // New property to track game status
+    isSelecting: false
 };
 
-// Additional DOM elements
+// DOM elements
 const gridElement = document.getElementById('grid');
 const wordListElement = document.getElementById('wordList');
 const scoreElement = document.getElementById('score');
 const timerElement = document.getElementById('timer');
-const timerProgressElement = document.getElementById('timerProgress');
-const gameStatusElement = document.getElementById('gameStatus');
 const newGameButton = document.getElementById('newGameBtn');
+const difficultyButtons = document.querySelectorAll('.difficulty-btn');
 
 // Initialize the game
 function initGame() {
+    // Apply difficulty settings
+    applyDifficultySettings();
+    
     resetGameState();
     createEmptyGrid();
     selectRandomWords();
@@ -60,13 +81,72 @@ function initGame() {
     fillEmptySpaces();
     renderGrid();
     renderWordList();
-    updateGameStatus('Encontre todas as palavras!');
     startTimer();
 }
 
-// Reset game state with enhanced properties
+// Apply settings based on selected difficulty
+function applyDifficultySettings() {
+    const diffSettings = config.difficulties[config.difficulty];
+    config.gridSize = diffSettings.gridSize;
+    config.wordCount = diffSettings.wordCount;
+    config.timeLimit = diffSettings.timeLimit;
+    
+    // Update grid class for CSS
+    gridElement.className = 'grid-container grid-' + config.difficulty;
+}
+
+// Handle difficulty selection
+function handleDifficultySelection(event) {
+    const selectedDifficulty = event.target.dataset.difficulty;
+    if (!selectedDifficulty) return;
+    
+    // Update active button
+    difficultyButtons.forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Update config
+    config.difficulty = selectedDifficulty;
+    
+    // Show game elements
+    document.querySelector('.game-info').style.display = 'flex';
+    document.querySelector('.grid-container').style.display = 'grid';
+    document.querySelector('.controls').style.display = 'block';
+    
+    // Start new game with new settings
+    initGame();
+}
+
+// Event listeners
+newGameButton.addEventListener('click', initGame);
+
+// Add event listeners for difficulty buttons
+difficultyButtons.forEach(btn => {
+    btn.addEventListener('click', handleDifficultySelection);
+});
+
+// ONLY ONE window load event listener
+window.addEventListener('load', function() {
+    // Set default difficulty
+    config.difficulty = 'medium';
+    
+    // Show the difficulty selector, hide the game elements initially
+    document.querySelector('.difficulty-selector').style.display = 'flex';
+    document.querySelector('.game-info').style.display = 'none';
+    document.querySelector('.grid-container').style.display = 'none';
+    document.querySelector('.controls').style.display = 'none';
+    
+    // Set the medium button as active by default
+    document.querySelector('.difficulty-btn[data-difficulty="medium"]').classList.add('active');
+});
+
+// Reset game state
 function resetGameState() {
-    clearInterval(gameState.timerInterval);
+    if (gameState.timerInterval) {
+        clearInterval(gameState.timerInterval);
+    }
+    
     gameState = {
         grid: [],
         words: [],
@@ -75,9 +155,9 @@ function resetGameState() {
         timeRemaining: config.timeLimit,
         timerInterval: null,
         selectedCells: [],
-        isSelecting: false,
-        gameStatus: 'playing'
+        isSelecting: false
     };
+    
     updateScore();
     updateTimer();
 }
@@ -203,7 +283,7 @@ function renderGrid() {
     document.addEventListener('mouseup', endSelection);
 }
 
-// Enhanced renderWordList with better word display
+// Render the word list
 function renderWordList() {
     wordListElement.innerHTML = '';
     
@@ -219,22 +299,15 @@ function renderWordList() {
     });
 }
 
-// Enhanced timer with progress bar
+// Start the timer
 function startTimer() {
     updateTimer();
-    updateTimerProgress();
-    
     gameState.timerInterval = setInterval(() => {
         gameState.timeRemaining--;
         updateTimer();
-        updateTimerProgress();
         
         if (gameState.timeRemaining <= 0) {
             endGame();
-        } else if (gameState.timeRemaining <= 10) {
-            // Visual indication when time is running out
-            timerElement.style.color = 'red';
-            updateGameStatus('Tempo acabando!');
         }
     }, 1000);
 }
@@ -244,35 +317,9 @@ function updateTimer() {
     timerElement.textContent = gameState.timeRemaining;
 }
 
-// New function to update timer progress bar
-function updateTimerProgress() {
-    const percentage = (gameState.timeRemaining / config.timeLimit) * 100;
-    timerProgressElement.style.width = `${percentage}%`;
-    
-    // Change color based on time remaining
-    if (percentage <= 20) {
-        timerProgressElement.style.backgroundColor = '#f44336'; // Red
-    } else if (percentage <= 50) {
-        timerProgressElement.style.backgroundColor = '#ff9800'; // Orange
-    } else {
-        timerProgressElement.style.backgroundColor = '#4CAF50'; // Green
-    }
-}
-
-// Update the score display with animation
+// Update the score display
 function updateScore() {
-    // Animate score change
-    scoreElement.classList.add('celebrate');
-    setTimeout(() => {
-        scoreElement.classList.remove('celebrate');
-    }, 500);
-    
     scoreElement.textContent = gameState.score;
-}
-
-// New function to update game status message
-function updateGameStatus(message) {
-    gameStatusElement.textContent = message;
 }
 
 // Start selection
@@ -382,36 +429,20 @@ function wordFound(word) {
     gameState.score += word.length * 10;
     updateScore();
     
-    // Mark cells as correct with animation
+    // Mark cells as correct
     gameState.selectedCells.forEach(cell => {
         cell.element.classList.add('correct');
-        cell.element.classList.add('celebrate');
-        setTimeout(() => {
-            cell.element.classList.remove('celebrate');
-        }, 500);
     });
     
     // Update word list
     const wordItem = document.querySelector(`.word-item[data-word="${word}"]`);
     if (wordItem) {
         wordItem.classList.add('word-found');
-        wordItem.classList.add('celebrate');
-        setTimeout(() => {
-            wordItem.classList.remove('celebrate');
-        }, 500);
     }
-    
-    // Update game status
-    updateGameStatus(`Você encontrou "${word}"!`);
     
     // Check if all words are found
     if (gameState.foundWords.length === gameState.words.length) {
         endGame(true);
-    } else {
-        // Encourage player
-        setTimeout(() => {
-            updateGameStatus(`Encontre mais ${gameState.words.length - gameState.foundWords.length} palavras!`);
-        }, 1500);
     }
 }
 
@@ -442,7 +473,6 @@ function handleTouchEnd(event) {
 // End the game
 function endGame(allWordsFound = false) {
     clearInterval(gameState.timerInterval);
-    gameState.gameStatus = 'ended';
     
     if (allWordsFound) {
         // Bonus for finding all words
@@ -450,33 +480,23 @@ function endGame(allWordsFound = false) {
         gameState.score += timeBonus;
         updateScore();
         
-        updateGameStatus(`Parabéns! Você encontrou todas as palavras!`);
-        
         setTimeout(() => {
-            alert(`Parabéns! Você encontrou todas as palavras!\nBônus de tempo: ${timeBonus}\nPontuação final: ${gameState.score}`);
+            alert(`Parabéns! Você encontrou todas as palavras!\nPontuação final: ${gameState.score}`);
         }, 500);
     } else {
-        updateGameStatus(`Tempo esgotado!`);
+        // Highlight missed words
+        const missedWords = gameState.words.filter(word => !gameState.foundWords.includes(word));
+        
+        // Update word list to show missed words
+        missedWords.forEach(word => {
+            const wordItem = document.querySelector(`.word-item[data-word="${word}"]`);
+            if (wordItem) {
+                wordItem.classList.add('word-missed');
+            }
+        });
         
         setTimeout(() => {
             alert(`Tempo esgotado!\nVocê encontrou ${gameState.foundWords.length} de ${gameState.words.length} palavras.\nPontuação final: ${gameState.score}`);
         }, 500);
     }
-    
-    // Highlight unfound words
-    gameState.words.forEach(word => {
-        if (!gameState.foundWords.includes(word)) {
-            const wordItem = document.querySelector(`.word-item[data-word="${word}"]`);
-            if (wordItem) {
-                wordItem.style.backgroundColor = '#f44336';
-                wordItem.style.color = 'white';
-            }
-        }
-    });
 }
-
-// Event listeners
-newGameButton.addEventListener('click', initGame);
-
-// Start the game when the page loads
-window.addEventListener('load', initGame);
