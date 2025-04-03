@@ -45,7 +45,7 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    max-width: 70%;
+    max-width: 60%;
 }
 
 .word-item {
