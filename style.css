@@ -1,0 +1,221 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f0f2f5;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    max-width: 800px;
+    width: 95%;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.word-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 70%;
+}
+
+.word-item {
+    background-color: #f0f0f0;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    transition: all 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border: 1px solid #e0e0e0;
+}
+
+.word-found {
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: line-through;
+    border-color: #3d8b40;
+}
+
+.score-container {
+    text-align: right;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.score-container p {
+    margin: 5px 0;
+    font-weight: 600;
+}
+
+.score-container span {
+    font-weight: 700;
+    color: #4CAF50;
+    font-size: 1.2em;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 5px;
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.grid-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    font-size: 1.2em;
+}
+
+.grid-cell:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.grid-cell.selected {
+    background-color: #ffeb3b;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.grid-cell.correct {
+    background-color: #4CAF50;
+    color: white;
+    transform: scale(1.05);
+}
+
+.controls {
+    text-align: center;
+    margin-top: 10px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+}
+
+button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(76, 175, 80, 0.4);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
+}
+
+@media (max-width: 768px) {
+    .game-info {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .word-list {
+        max-width: 100%;
+    }
+    
+    .score-container {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    
+    .grid-container {
+        grid-template-columns: repeat(10, 1fr);
+        gap: 3px;
+        padding: 10px;
+    }
+    
+    .grid-cell {
+        font-size: 14px;
+    }
+}
+
+/* Animation for found words */
+@keyframes celebrate {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.celebrate {
+    animation: celebrate 0.5s ease-in-out;
+}
+
+/* Progress bar for timer */
+.timer-bar {
+    height: 6px;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.timer-progress {
+    height: 100%;
+    background-color: #4CAF50;
+    transition: width 1s linear;
+}
+
+/* Game status message */
+.game-status {
+    text-align: center;
+    margin: 15px 0;
+    font-weight: 600;
+    color: #555;
+    min-height: 24px;
+}

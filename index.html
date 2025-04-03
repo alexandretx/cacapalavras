@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caça-Palavras</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Caça-Palavras</h1>
+        
+        <div class="game-status" id="gameStatus">Encontre todas as palavras!</div>
+        
+        <div class="game-info">
+            <div class="word-list" id="wordList"></div>
+            <div class="score-container">
+                <p>Pontuação: <span id="score">0</span></p>
+                <p>Tempo: <span id="timer">60</span>s</p>
+                <div class="timer-bar">
+                    <div class="timer-progress" id="timerProgress"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid-container" id="grid"></div>
+        
+        <div class="controls">
+            <button id="newGameBtn">Novo Jogo</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
