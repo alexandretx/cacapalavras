@@ -1,5 +1,3 @@
-// Word Search Game
-
 // Game configuration
 const config = {
     gridSize: 10,
